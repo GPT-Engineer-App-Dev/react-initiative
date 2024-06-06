@@ -43,7 +43,13 @@ Drinks // table: drinks
     name: string
     percentage: number
     country: string
-	
+
+Users // table: users
+    id: number
+    created_at: string
+    email: string
+    password: string
+    role: string
 */
 
 // Hooks for Animals table
@@ -150,6 +156,42 @@ export const useDeleteDrink = () => {
         mutationFn: (id) => fromSupabase(supabase.from('drinks').delete().eq('id', id)),
         onSuccess: () => {
             queryClient.invalidateQueries('drinks');
+        },
+    });
+};
+
+// Hooks for Users table
+export const useUsers = () => useQuery({
+    queryKey: ['users'],
+    queryFn: () => fromSupabase(supabase.from('users').select('*')),
+});
+
+export const useAddUser = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (newUser) => fromSupabase(supabase.from('users').insert([newUser])),
+        onSuccess: () => {
+            queryClient.invalidateQueries('users');
+        },
+    });
+};
+
+export const useUpdateUser = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (updatedUser) => fromSupabase(supabase.from('users').update(updatedUser).eq('id', updatedUser.id)),
+        onSuccess: () => {
+            queryClient.invalidateQueries('users');
+        },
+    });
+};
+
+export const useDeleteUser = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (id) => fromSupabase(supabase.from('users').delete().eq('id', id)),
+        onSuccess: () => {
+            queryClient.invalidateQueries('users');
         },
     });
 };

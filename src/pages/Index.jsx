@@ -1,31 +1,12 @@
-import { Container, Text, VStack, Box, Flex, Spacer, IconButton, useColorMode, useColorModeValue, Input, Button, Heading } from "@chakra-ui/react";
+import { Container, Text, VStack, Box, Flex, Spacer, IconButton, useColorMode, useColorModeValue, Button } from "@chakra-ui/react";
 import { FaSun, FaMoon } from "react-icons/fa";
+import { useSupabaseAuth } from "../integrations/supabase/auth.jsx";
 
 const Index = () => {
+  const { session, logout } = useSupabaseAuth();
   const { colorMode, toggleColorMode } = useColorMode();
   const bgColor = useColorModeValue("gray.100", "gray.900");
   const color = useColorModeValue("black", "white");
-
-  const LoginBox = () => (
-    <Box
-      bg={useColorModeValue("white", "gray.700")}
-      p={8}
-      borderRadius="md"
-      boxShadow="lg"
-      w={{ base: "90%", md: "400px" }}
-    >
-      <Heading as="h2" size="lg" mb={6} textAlign="center">
-        Login
-      </Heading>
-      <VStack spacing={4}>
-        <Input placeholder="Email" type="email" />
-        <Input placeholder="Password" type="password" />
-        <Button colorScheme="blue" w="full">
-          Submit
-        </Button>
-      </VStack>
-    </Box>
-  );
 
   return (
     <Box bg={bgColor} color={color} minH="100vh">
@@ -37,9 +18,14 @@ const Index = () => {
           icon={colorMode === "light" ? <FaMoon /> : <FaSun />}
           onClick={toggleColorMode}
         />
+        {session && (
+          <Button ml={4} onClick={logout}>
+            Logout
+          </Button>
+        )}
       </Flex>
       <Container centerContent maxW="container.md" py={8}>
-        <LoginBox />
+        <Text>Welcome, {session.user.email}</Text>
       </Container>
     </Box>
   );
