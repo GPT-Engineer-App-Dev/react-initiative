@@ -44,7 +44,12 @@ Drinks // table: drinks
     percentage: number
     country: string
 	
-*/
+Users // table: users
+    id: number
+    created_at: string
+    email: string
+    password: string
+    role: string
 
 // Hooks for Animals table
 export const useAnimals = () => useQuery({
